@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -50,6 +51,14 @@ public class WebSecurityConfig {
 				.pathMatchers(HttpMethod.OPTIONS).permitAll()				
 				.pathMatchers("/login").permitAll()
 				.pathMatchers("/v2/api-docs/**").permitAll()
+				.pathMatchers("/factura/**")
+				.access((mono, context) -> mono
+	                    .map(auth -> auth.getAuthorities().stream()
+	                            .filter(e -> e.getAuthority().equals("ADMIN"))
+	                            .count() > 0)
+	                    .map(AuthorizationDecision::new)
+	            )
+
 				.anyExchange().authenticated()
 				.and().build();
 	}

@@ -23,8 +23,8 @@ public class RouteConfig {
 	@Bean
 	public RouterFunction<ServerResponse> rutaEstudiantes(EstudianteHandler handler) {
 		return RouterFunctions.route(RequestPredicates.GET("/estudiantes"), handler::listar)
-				.andRoute(RequestPredicates.GET("/estudiantes/listParalOrderDescEdad"), handler::listParalOrderDescEdad)
 				.andRoute(RequestPredicates.GET("/estudiantes/listOrderDescEdad"), handler::listOrderDescEdad)
+				.andRoute(RequestPredicates.GET("/estudiantes/listParalOrderDescEdad"), handler::listParalOrderDescEdad)
 				.andRoute(RequestPredicates.GET("/estudiantes/{id}"), handler::listarPorId)
 				.andRoute(RequestPredicates.POST("/estudiantes"), handler::registrar)
 				.andRoute(RequestPredicates.PUT("/estudiantes"), handler::modificar)
